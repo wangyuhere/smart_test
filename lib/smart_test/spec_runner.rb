@@ -8,12 +8,12 @@ module SmartTest
       @filter = Filter.new @project
       @options = {
         type: :mtime,
-        number: 1
+        param: 1
       }.merge! options
     end
 
     def files
-      @files ||= @filter.send @options[:type], @options[:number]
+      @files ||= @filter.send @options[:type], @options[:param]
     end
 
     def run

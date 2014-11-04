@@ -13,25 +13,11 @@ module SmartTest
         map &:first
     end
 
-    def diff
-      check_git
-      raise "to be implemented"
-    end
-
-    def commit
-      check_git
-      raise "to be implemented"
-    end
-
-    def branch
-      check_git
-      raise "to be implemented"
+    def diff(str)
+      raise NotGitRepoError unless project.using_git?
+      `git diff #{str} --name-only`.split("\n").select { |file| project.test_file? file }
     end
 
     private
-
-    def check_git
-      raise "Not a git project" unless project.using_git?
-    end
   end
 end
