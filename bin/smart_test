@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "smart_test"
+
+SmartTest::CLI.new.parse! ARGV
