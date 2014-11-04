@@ -11,11 +11,11 @@ module SmartTest
 Run test smartly
 
 Usage: smart_test [-b|-c|-d]
-       smart_test -v
+       smart_test -s
        smart_test NUM
         EOS
 
-        opt.on("-V", "--version", "Show version") do
+        opt.on("--version", "Show version") do
           puts VERSION
           exit
         end
@@ -23,18 +23,34 @@ Usage: smart_test [-b|-c|-d]
         opt.on("-n", "--number [NUM]", Integer, "Number of files") do |num|
           options[:number] = num || 1
         end
+
+        opt.on("-s", "--show", "Show test files only") do
+          options[:show] = true
+        end
       end
 
       opts.parse! args
 
-      start_runner options
+      @runner = SpecRunner.new(Dir.pwd, options)
+      if options[:show]
+        show_test_files
+      else
+        run
+      end
     end
 
-    def start_runner(options)
-      runner = SpecRunner.new(Dir.pwd, options)
+    private
 
-      puts runner.cmd
-      runner.run
+    def run
+      puts @runner.cmd
+      @runner.run
+    end
+
+    def show_test_files
+      puts "Found test files:"
+      @runner.files.each do |file|
+        puts "  #{file}"
+      end
     end
   end
 end
