@@ -1,26 +1,37 @@
 # SmartTest
 
-TODO: Write a gem description
+Run tests based on file last modifed at and git diff.
+
+Now only rspec is supported!
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'smart_test'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install smart_test
 
 ## Usage
 
-TODO: Write usage instructions here
+Under the root of a project with test files, you can run:
+
+
+Run latest modified test file
+
+    $ smart_test
+
+Run latest modified 3 test files
+
+    $ smart_test 3
+
+Run test files based on git diff, -d can be skipped if it has param
+
+    $ smart_test -d
+    $ smart_test -d master
+    $ smart_test HEAD~2
+    $ smart_test GIT_HASH
+
+Show the test files which will be running
+
+    $ smart_test -d master -s
+
 
 ## Contributing
 
