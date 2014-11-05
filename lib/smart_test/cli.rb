@@ -10,12 +10,12 @@ module SmartTest
         opt.banner = <<-EOS
 Run test smartly
 
-Usage: smart_test -d
-       smart_test -s
-       smart_test NUM
+Usage: smart_test -d GIT_DIFF_PARAM
+       smart_test [-s|-b]
+       smart_test -n NUM
         EOS
 
-        opt.on("--version", "Show version") do
+        opt.on("-v", "--version", "Show version") do
           puts VERSION
           exit
         end
@@ -33,14 +33,28 @@ Usage: smart_test -d
           options[:type] = :diff
           options[:param] = str
         end
+
+        opt.on("-b", "--branch", "Branch test") do
+          options[:type] = :diff
+          options[:param] = "master"
+        end
       end
 
       opts.parse! args
 
+      if options.empty? && args.size > 0
+        arg = args.join ' '
+        if arg =~ /\d+/
+          options = { type: :mtime, param: arg.to_i }
+        else
+          options= { type: :diff, param: arg }
+        end
+      end
+
       @runner = SpecRunner.new(Dir.pwd, options)
 
       if @runner.files.empty?
-        puts "Not test files to run!"
+        puts "No test files to run!"
         return
       end
 
