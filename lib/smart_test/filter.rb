@@ -17,7 +17,5 @@ module SmartTest
       raise NotGitRepoError unless project.using_git?
       `git diff #{str} --name-only`.split("\n").select { |file| project.test_file? file }
     end
-
-    private
   end
 end
